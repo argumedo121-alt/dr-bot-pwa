@@ -38,7 +38,7 @@ let recordStart   = 0;
 
 // Servidor de Producción (IP Pública o Dominio)
 // TODO: Recuerda que necesitas HTTPS para evitar el error de Mixed Content en GitHub Pages
-const API_SERVER = 'http://150.136.124.250:8000';
+const API_SERVER = 'https://paycheck-raking-unusable.ngrok-free.dev';
 
 // ═══════════════════════════════════════════════════
 // Storage Helpers
