@@ -36,11 +36,9 @@ let isRecording   = false;
 let timerInterval = null;
 let recordStart   = 0;
 
-// ═══════════════════════════════════════════════════
-// Configuración de Servidor
-// ═══════════════════════════════════════════════════
-// Ngrok Tunnel (HTTPS seguro)
-const API_SERVER = 'https://garrett-apotropaic-trophically.ngrok-free.dev';
+// Servidor de Producción (IP Pública o Dominio)
+// TODO: Recuerda que necesitas HTTPS para evitar el error de Mixed Content en GitHub Pages
+const API_SERVER = 'http://150.136.124.250:8000';
 
 // ═══════════════════════════════════════════════════
 // Storage Helpers
