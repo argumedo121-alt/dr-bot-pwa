@@ -16,7 +16,6 @@ const $$ = (sel) => document.querySelectorAll(sel);
 const setupScreen   = $('#setup-screen');
 const recorderScreen = $('#recorder-screen');
 const tokenInput    = $('#token-input');
-const serverInput   = $('#server-input');
 const saveTokenBtn  = $('#save-token-btn');
 const setupError    = $('#setup-error');
 const recordBtn     = $('#record-btn');
@@ -38,21 +37,24 @@ let timerInterval = null;
 let recordStart   = 0;
 
 // ═══════════════════════════════════════════════════
+// Configuración de Servidor
+// ═══════════════════════════════════════════════════
+// TODO: Cambia esto por la IP o Dominio público de tu Máquina Virtual
+const API_SERVER = 'https://TU_DOMINIO_O_IP:8000';
+
+// ═══════════════════════════════════════════════════
 // Storage Helpers
 // ═══════════════════════════════════════════════════
 const STORAGE_KEYS = {
     TOKEN:  'drbot_pwa_token',
-    SERVER: 'drbot_pwa_server',
     SKIN:   'drbot_pwa_skin',
 };
 
 function getToken()  { return localStorage.getItem(STORAGE_KEYS.TOKEN);  }
-function getServer() { return localStorage.getItem(STORAGE_KEYS.SERVER); }
 function getSkin()   { return localStorage.getItem(STORAGE_KEYS.SKIN) || 'normal'; }
 
-function saveConfig(token, server) {
+function saveConfig(token) {
     localStorage.setItem(STORAGE_KEYS.TOKEN, token);
-    localStorage.setItem(STORAGE_KEYS.SERVER, server.replace(/\/+$/, '')); // strip trailing slash
 }
 
 // ═══════════════════════════════════════════════════
@@ -61,9 +63,6 @@ function saveConfig(token, server) {
 function showSetup() {
     setupScreen.classList.remove('hidden');
     recorderScreen.classList.add('hidden');
-    // Pre-fill if already configured
-    const savedServer = getServer();
-    if (savedServer) serverInput.value = savedServer;
 }
 
 function showRecorder() {
@@ -76,9 +75,8 @@ function showRecorder() {
 // ═══════════════════════════════════════════════════
 function init() {
     const token  = getToken();
-    const server = getServer();
 
-    if (token && server) {
+    if (token) {
         showRecorder();
     } else {
         showSetup();
@@ -93,7 +91,6 @@ function init() {
 // ═══════════════════════════════════════════════════
 saveTokenBtn.addEventListener('click', () => {
     const token  = tokenInput.value.trim();
-    const server = serverInput.value.trim();
 
     setupError.textContent = '';
 
@@ -101,16 +98,8 @@ saveTokenBtn.addEventListener('click', () => {
         setupError.textContent = '❌ Ingresa tu token de acceso';
         return;
     }
-    if (!server) {
-        setupError.textContent = '❌ Ingresa la dirección del servidor';
-        return;
-    }
-    if (!server.startsWith('http')) {
-        setupError.textContent = '❌ El servidor debe comenzar con https://';
-        return;
-    }
 
-    saveConfig(token, server);
+    saveConfig(token);
     showRecorder();
     showNotification('success', '✅', 'Configuración guardada');
 });
@@ -282,10 +271,9 @@ function resetUI() {
 // ═══════════════════════════════════════════════════
 async function sendAudio(blob, ext) {
     const token  = getToken();
-    const server = getServer();
 
-    if (!token || !server) {
-        showNotification('error', '⚙️', 'Token o servidor no configurado');
+    if (!token) {
+        showNotification('error', '⚙️', 'Token no configurado');
         resetUI();
         showSetup();
         return;
@@ -302,7 +290,7 @@ async function sendAudio(blob, ext) {
     formData.append('audio', blob, `recording${ext}`);
 
     try {
-        const response = await fetch(`${server}/api/audio`, {
+        const response = await fetch(`${API_SERVER}/api/audio`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
