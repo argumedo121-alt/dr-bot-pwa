@@ -39,8 +39,8 @@ let recordStart   = 0;
 // ═══════════════════════════════════════════════════
 // Configuración de Servidor
 // ═══════════════════════════════════════════════════
-// TODO: Si alojas la PWA en HTTPS (GitHub Pages), necesitas que esta IP tenga un certificado SSL (HTTPS) o usar un dominio, de lo contrario el navegador bloqueará la conexión por "Mixed Content".
-const API_SERVER = 'http://150.136.124.250:8000';
+// Ngrok Tunnel (HTTPS seguro)
+const API_SERVER = 'https://garrett-apotropaic-trophically.ngrok-free.dev';
 
 // ═══════════════════════════════════════════════════
 // Storage Helpers
