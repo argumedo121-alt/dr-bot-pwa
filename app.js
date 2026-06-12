@@ -39,8 +39,8 @@ let recordStart   = 0;
 // ═══════════════════════════════════════════════════
 // Configuración de Servidor
 // ═══════════════════════════════════════════════════
-// TODO: Cambia esto por la IP o Dominio público de tu Máquina Virtual
-const API_SERVER = 'https://TU_DOMINIO_O_IP:8000';
+// TODO: Si alojas la PWA en HTTPS (GitHub Pages), necesitas que esta IP tenga un certificado SSL (HTTPS) o usar un dominio, de lo contrario el navegador bloqueará la conexión por "Mixed Content".
+const API_SERVER = 'http://150.136.124.250:8000';
 
 // ═══════════════════════════════════════════════════
 // Storage Helpers
